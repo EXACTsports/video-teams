@@ -21,7 +21,7 @@ class GetTeamsFromTitle
         if($matches) {
             return [str_replace("(", "", $matches[1]), str_replace(")", "", $matches[3])];
         } else {
-            return ['null', 'null'];
+            return [null, null];
         }
     }
 }
