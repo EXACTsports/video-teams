@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $videos = \App\Models\GameVideo::find(2257);
+    return $videos->teams;
 });
+
