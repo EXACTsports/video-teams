@@ -20,7 +20,7 @@ class GetTeamsFromTitle
             if($zero != "")
             {
                 $word = $matches[0][0];
-                // $word = str_replace("T","",$word);
+                $word = str_replace("T","",$word);
                 $word = str_replace("eam","",$word);
                 $word = str_replace("s.","",$word);
 
