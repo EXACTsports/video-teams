@@ -6,34 +6,127 @@ class GetTeamsFromTitle
 {
     public function __invoke(string $title): array
     {
-//    TODO: Extract the two teams that played in the game from the title of the video and return them as an array.
+
+        // TODO: Extract the two teams that played in the game from the title of the video and return them as an array.
         // example: return [1, 3];
         // example: return ['A', 'F'];
         // return ['A', 'TODO'];
-
-        $pattern = '/(\(\w+\s\d\s?\s(v|vs.)\s?\w+\s\d\))|\(\w+\s\d\s?\s(v|vs.)\s?\w+\s\d\)|(\d{1,2}\s?[v|V]\s?\d{1,2})|(\w*\s[v|V]\s\w*)/';
+        $pattern = '/([a-zA-Z0-9]+\s[vV][sS]?\s?[A-Za-z0-9]+)|([(][A-Za-z0-9]+\s?[0-9]?\s?[vV][sS]?.?\s?[A-Za-z0-9]+\s?[0-9]?[)])/';
         preg_match_all($pattern, $title, $matches);
-
         if(!empty($matches[0]))
         {
             $zero = $matches[0][0];
             if($zero != "")
             {
-                $word = $matches[0][0];
-                $word = str_replace("T","",$word);
-                $word = str_replace("eam","",$word);
-                $word = str_replace("s.","",$word);
-
-
-                $arr = explode("V",$word);
-                if(count($arr)==2)
+                if(str_contains($zero,"Las Vegas"))
                 {
-                    return [$arr[0],$arr[1]];
+                    return ["null","null"];
                 }
-                $arr = explode("v",str_replace(")","",str_replace("(","",$word)));
-                if(count($arr)==2)
+                if(str_contains($zero,"Team"))
                 {
-                    return [$arr[0],$arr[1]];
+                    try {
+                        //code...
+                        $arr = explode("vs.",$zero);
+                        if(count($arr)==2)
+                        {
+                            $team1 = str_replace("(","",$arr[0]);
+                            $team1 = str_replace("Team","",$team1);
+                            $team2 = str_replace(")","",$arr[1]);
+                            $team2 = str_replace("Team","",$team2);
+                            return [$team1,$team2];
+                        }
+                        $arr = explode("v",$zero);
+                        if(count($arr)==2)
+                        {
+                            $team1 = str_replace("(","",$arr[0]);
+                            $team1 = str_replace("Team","",$team1);
+                            $team2 = str_replace(")","",$arr[1]);
+                            $team2 = str_replace("Team","",$team2);
+                            return [$team1,$team2];
+                        }
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        dd("what",$zero);
+                    }
+
+                }
+                else if(str_contains($zero,"T"))
+                {
+                    try {
+                        //code...
+                        $arr = explode("vs",$zero);
+                        if(count($arr)==2)
+                        {
+                            $occur = 0;
+                            $team1 = str_replace("(","",$arr[0]);
+                            $team1 = str_replace("T","",$team1,$occur);
+                            if($occur == 2)
+                            {
+                                $team1 = "T";
+                            }
+                            $team2 = str_replace(")","",$arr[1]);
+                            $team2 = str_replace("T","",$team2,$occur);
+                            if($occur == 2)
+                            {
+                                $team2 = "T";
+                            }
+                            return [$team1,$team2];
+                        }
+                        $arr = explode("v",$zero);
+                        if(count($arr)==2)
+                        {
+                            $occur = 0;
+                            $team1 = str_replace("(","",$arr[0]);
+                            $team1 = str_replace("T","",$team1,$occur);
+                            if($occur == 2)
+                            {
+                                $team1 = "T";
+                            }
+                            $team2 = str_replace(")","",$arr[1]);
+                            $team2 = str_replace("T","",$team2,$occur);
+                            if($occur == 2)
+                            {
+                                $team2 = "T";
+                            }
+                            return [$team1,$team2];
+                        }
+                        $arr = explode("V",$zero);
+                        if(count($arr)==2)
+                        {
+                            $occur = 0;
+                            $team1 = str_replace("(","",$arr[0]);
+                            $team1 = str_replace("T","",$team1,$occur);
+                            if($occur == 2)
+                            {
+                                $team1 = "T";
+                            }
+                            $team2 = str_replace(")","",$arr[1]);
+                            $team2 = str_replace("T","",$team2,$occur);
+                            if($occur == 2)
+                            {
+                                $team2 = "T";
+                            }
+                            return [$team1,$team2];
+                        }
+                    } catch (\Throwable $th) { 
+                        dd("what",$zero);
+                    }
+                }
+                else
+                {
+
+                    $arr = explode("v",str_replace(")","",str_replace("(","",$zero)));
+                    if(count($arr)==2)
+                    {
+                        return [$arr[0],$arr[1]];
+                    }
+
+                    $arr = explode("V",$zero);
+
+                    if(count($arr)==2)
+                    {
+                        return [$arr[0],$arr[1]];
+                    }
                 }
             }
 
